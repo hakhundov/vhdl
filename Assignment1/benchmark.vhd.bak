@@ -28,7 +28,7 @@ A : CPU
   );
 
 
-InStructions   <= "0010"&"0000"&"0000"&"0000";
+InStructions   <= "0010"+"0000"+"0000"+ "0000";
 
 clock : PROCESS is
    begin
