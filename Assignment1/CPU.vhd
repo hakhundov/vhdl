@@ -39,19 +39,57 @@ begin
 	return back;
 end to_bitVector;
 
+
+SIGNAL  Opcode, Field1, Field2, Field3 : bit_vector( 3 downto 0 );
+
+-- STORAGE -- 16 entries of 8 bits
+subtype cell is bit_vector(7 downto 0);
+type mem_array is array (0 to 15) of cell;
+-- meme = On-chip Memory reg = Registers
+signal mem, reg : mem_array;
+
+
+
+	
 begin
-Stage1 : process is
+
+Stage1 : process (clk)
+
 begin
-	if (InStructions(12) = '1') then
-		--Load register
-	elsif (InStructions(13) = '1') then
-		--Store Immediate
-	elsif (InStructions(14) = '1') then
-		--Store Register
-	elsif (InStructions(15) = '1') then
-		--Add stuff
-	else 
-		--Do nothing
-	end if;
-end process;
+	Opcode <= InStructions(15 downto 12);
+	Field1 <= InStructions(11 downto 8);
+	Field2 <= InStructions(7 downto 4);
+	Field3 <= InStructions(3 downto 0);
+end process; -- end of first stage
+
+Stage2 : process (clk)
+begin
+if (clk = '1') then 
+	CASE Opcode is
+	-- Load Register
+	when "0001" =>  
+	
+			--if (clk'event and clk = '1') then  -- Work on rising edges
+		  if (MemWrite = '0') then -- READING THE DATA
+			read_data <= m(to_integer(address));
+		  else  		   -- WRITING DATA
+			m(to_integer(address)) <= write_data;
+		  end if;
+
+	-- Store Immediate
+	when "0010" =>  
+
+	-- Store Register
+	when "0100" =>  
+	
+	-- ADD
+	when "1000" => 
+	
+	when others =>
+	
+	end case;
+end if;-- end of rising edge
+end process; --end of second stage
+
+
 end only;
