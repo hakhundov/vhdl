@@ -41,7 +41,7 @@ end to_bitVector;
 
 Signal tempA1, tempA2, sum1, sum2  : integer := 0;
 Signal A1, Aout : bit_vector(7 downto 0) := "00001111";
-Signal A2 : bit_vector(7 downto 0) := "00000001";	
+Signal A2 : bit_vector(7 downto 0) := "10000001";	
 --signal Shity: bit_vector(7 downto 0) := "00001111";
 begin
 tempA1 <= to_integer(A1);
