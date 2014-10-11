@@ -41,7 +41,7 @@ end to_bitVector;
 
 
 SIGNAL  Opcode, Field1, Field2, Field3 : bit_vector( 3 downto 0 );
-SIGNAL Data1, Data2 : bit_vector (7 downto 0);
+--SIGNAL Data1, Data2 : bit_vector (7 downto 0);
 
 -- STORAGE -- 16 entries of 8 bits
 subtype cell is bit_vector(7 downto 0);
@@ -64,6 +64,7 @@ begin
 end process; -- end of first stage
 
 Stage2 : process (clk)
+variable Data1, Data2 : bit_vector (7 downto 0);
 begin
 if (clk = '1') then 
 	CASE Opcode is
@@ -73,8 +74,8 @@ if (clk = '1') then
 	
 	-- Store Immediate
 	when "0010" =>  
-		Data1(3 downto 0) <= Field3;
-		Data1(7 downto 4) <= Field2;
+		Data1(3 downto 0) := Field3;
+		Data1(7 downto 4) := Field2;
 		mem(to_integer(Field1,4)) <= Data1;
 
 	-- Store Register
@@ -83,8 +84,8 @@ if (clk = '1') then
 	
 	-- ADD
 	when "1000" => 
-		Data1 <= reg(to_integer(Field2,4));
-		Data2 <= reg(to_integer(Field3,4));
+		Data1 := reg(to_integer(Field2,4));
+		Data2 := reg(to_integer(Field3,4));
 		reg(to_integer(Field1,4)) <= to_bitVector(to_integer(Data1,8) + to_integer(Data2,8),8);
 
 	when others =>
