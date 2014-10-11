@@ -1,0 +1,39 @@
+------------------------------------------
+--TEST BENCH CPU.vhd---------------
+------------------------------------------
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity test_cpu is
+  -- no ports  
+end test_cpu;
+
+architecture first_test of test_cpu is
+
+COMPONENT CPU
+      PORT ( 
+			clk : in bit;
+			InStructions : in bit_vector(15 DOWNTO 0)
+			);
+END COMPONENT ;
+
+SIGNAL clk: bit;
+SIGNAL InStructions : bit_vector(15 downto 0);
+
+begin
+A : CPU
+  PORT MAP (
+  clk => clk,
+  InStructions=>InStructions
+  );
+
+
+InStructions   <= "0010"+"0000"+"0000"+ "0000";
+
+clock : PROCESS is
+   begin
+     clk <= '0', '1' after 5ns;
+   wait for 10 ns;
+end PROCESS clock;
+
+end first_test;

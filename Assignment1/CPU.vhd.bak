@@ -41,7 +41,7 @@ end to_bitVector;
 
 
 SIGNAL  Opcode, Field1, Field2, Field3 : bit_vector( 3 downto 0 );
-SIGNAL Data1, Data2 : bit_vector (7 downto 0);
+SIGNAL Data1, Data2 : bit_vector (7 downto 9);
 
 -- STORAGE -- 16 entries of 8 bits
 subtype cell is bit_vector(7 downto 0);
