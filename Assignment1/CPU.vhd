@@ -41,6 +41,7 @@ end to_bitVector;
 
 
 SIGNAL  Opcode, Field1, Field2, Field3 : bit_vector( 3 downto 0 );
+SIGNAL Data1, Data2 : bit_vector (7 downto 9);
 
 -- STORAGE -- 16 entries of 8 bits
 subtype cell is bit_vector(7 downto 0);
@@ -68,23 +69,24 @@ if (clk = '1') then
 	CASE Opcode is
 	-- Load Register
 	when "0001" =>  
+		reg(to_integer(Field1,4)) <= mem(to_integer(Field2,4));
 	
-			--if (clk'event and clk = '1') then  -- Work on rising edges
-		  if (MemWrite = '0') then -- READING THE DATA
-			read_data <= m(to_integer(address));
-		  else  		   -- WRITING DATA
-			m(to_integer(address)) <= write_data;
-		  end if;
-
 	-- Store Immediate
 	when "0010" =>  
+		Data1(3 downto 0) <= Field3;
+		Data1(7 downto 4) <= Field2;
+		mem(to_integer(Field1,4)) <= Data1;
 
 	-- Store Register
 	when "0100" =>  
+		mem(to_integer(Field2,4)) <= reg(to_integer(Field1,4));
 	
 	-- ADD
 	when "1000" => 
-	
+		Data1 <= reg(to_integer(Field2,4));
+		Data2 <= reg(to_integer(Field3,4));
+		reg(to_integer(Field1)) <= to_bitVector(to_integer(Data1,8) + to_integer(Data2,8),8);
+
 	when others =>
 	
 	end case;
